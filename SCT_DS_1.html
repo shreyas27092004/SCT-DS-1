@@ -1,0 +1,73 @@
+<div class="cell code" data-execution_count="5">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="co"># ------------------------------</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co"># Load dataset</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co"># ------------------------------</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>df <span class="op">=</span> pd.read_csv(<span class="st">&quot;dataset.csv&quot;</span>, skiprows<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co"># Filter for India</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>india_data <span class="op">=</span> df[df[<span class="st">&quot;Country Name&quot;</span>] <span class="op">==</span> <span class="st">&quot;India&quot;</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co"># Select latest year (2022)</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>population_2022 <span class="op">=</span> india_data[<span class="st">&quot;2022&quot;</span>].values[<span class="dv">0</span>]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&quot;India Population 2022:&quot;</span>, population_2022)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="co"># ------------------------------</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a><span class="co"># Age Distribution Data (from UN / chart reference)</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a><span class="co"># ------------------------------</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a>age_groups <span class="op">=</span> [<span class="st">&quot;0-20 Years&quot;</span>, <span class="st">&quot;21-64 Years&quot;</span>, <span class="st">&quot;65+ Years&quot;</span>]</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a>population_values <span class="op">=</span> [<span class="dv">512</span>, <span class="dv">807</span>, <span class="dv">98</span>]  <span class="co"># in millions</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a>percentages <span class="op">=</span> [<span class="fl">36.1</span>, <span class="fl">57.0</span>, <span class="fl">6.9</span>]</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a><span class="co"># ------------------------------</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a><span class="co"># Bar Chart</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a><span class="co"># ------------------------------</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true"></a>bars <span class="op">=</span> plt.bar(age_groups, population_values, color<span class="op">=</span>[<span class="st">&quot;gold&quot;</span>, <span class="st">&quot;royalblue&quot;</span>, <span class="st">&quot;crimson&quot;</span>])</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true"></a><span class="co"># Add labels on top of each bar</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true"></a><span class="cf">for</span> bar, pop, pct <span class="kw">in</span> <span class="bu">zip</span>(bars, population_values, percentages):</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true"></a>    plt.text(bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="dv">2</span>, bar.get_height() <span class="op">+</span> <span class="dv">10</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true"></a>             <span class="ss">f&quot;</span><span class="sc">{</span>pop<span class="sc">}</span><span class="ss">M</span><span class="ch">\n</span><span class="ss">(</span><span class="sc">{</span>pct<span class="sc">}</span><span class="ss">%)&quot;</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>, fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">&#39;bold&#39;</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true"></a>plt.title(<span class="st">&quot;India&#39;s Population Distribution by Age (2022)&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">&#39;bold&#39;</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true"></a>plt.ylabel(<span class="st">&quot;Population (in Millions)&quot;</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true"></a>plt.xlabel(<span class="st">&quot;Age Groups&quot;</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true"></a>plt.ylim(<span class="dv">0</span>, <span class="bu">max</span>(population_values) <span class="op">+</span> <span class="dv">100</span>)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true"></a><span class="co"># Save and Show</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true"></a>plt.savefig(<span class="st">&quot;population_bar_chart.png&quot;</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">&quot;tight&quot;</span>)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true"></a>plt.show()</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true"></a><span class="co"># ------------------------------</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true"></a><span class="co"># Histogram (simulated ages for visualization)</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true"></a><span class="co"># ------------------------------</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true"></a>ages <span class="op">=</span> np.concatenate([</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true"></a>    np.random.randint(<span class="dv">0</span>, <span class="dv">21</span>, size<span class="op">=</span><span class="dv">512000</span>),</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true"></a>    np.random.randint(<span class="dv">21</span>, <span class="dv">65</span>, size<span class="op">=</span><span class="dv">807000</span>),</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true"></a>    np.random.randint(<span class="dv">65</span>, <span class="dv">100</span>, size<span class="op">=</span><span class="dv">98000</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true"></a>])</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true"></a>plt.hist(ages, bins<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span><span class="st">&quot;teal&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true"></a>plt.title(<span class="st">&quot;India&#39;s Age Distribution Histogram (Simulated, 2022)&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">&#39;bold&#39;</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true"></a>plt.xlabel(<span class="st">&quot;Age&quot;</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true"></a>plt.ylabel(<span class="st">&quot;Frequency&quot;</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true"></a><span class="co"># Save and Show</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true"></a>plt.savefig(<span class="st">&quot;population_histogram.png&quot;</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">&quot;tight&quot;</span>)</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true"></a>plt.show()</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>India Population 2022: 1425423212.0
+</code></pre>
+</div>
+<div class="output display_data">
+<p><img src="f33fbf6846d58678d8d25caf9c762d5ea7bb75ec.png" /></p>
+</div>
+<div class="output display_data">
+<p><img src="3da852e1f88fdee0d63641942febd4ac87c66aae.png" /></p>
+</div>
+</div>
